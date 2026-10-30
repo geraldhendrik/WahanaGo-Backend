@@ -8,15 +8,12 @@ RUN apt-get update && apt-get install -y \
     libpng-dev libjpeg62-turbo-dev libfreetype6-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install \
-       pdo_mysql pdo_sqlite sqlite3 mbstring exif pcntl bcmath gd zip intl opcache
+       pdo_mysql pdo_sqlite sqlite3 mbstring exif pcntl bcmath gd zip intl opcache \
     && a2enmod rewrite headers \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-# Create SQLite database file
-RUN touch database/database.sqlite
 
 WORKDIR /var/www/html
 
@@ -30,6 +27,9 @@ RUN sed -ri 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
 # Copy application
 COPY . .
 
+# Create SQLite database file
+RUN touch database/database.sqlite
+
 # Install production dependencies
 RUN composer install \
     --no-dev \
@@ -38,7 +38,7 @@ RUN composer install \
     --optimize-autoloader
 
 # Set permissions
-RUN chown -R www-data:www-data storage bootstrap/cache
+RUN chown -R www-data:www-data storage bootstrap/cache database
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
