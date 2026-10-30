@@ -24,21 +24,13 @@ RUN sed -ri 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
     /etc/apache2/sites-available/*.conf \
     /etc/apache2/apache2.conf
 
-<<<<<<< HEAD
-# Copy application
-=======
 # Copy Laravel application
->>>>>>> e171a06 (Add Docker configuration for Render)
 COPY . .
 
 # Create SQLite database file
 RUN touch database/database.sqlite
 
-<<<<<<< HEAD
-# Install production dependencies
-=======
 # Install PHP dependencies
->>>>>>> e171a06 (Add Docker configuration for Render)
 RUN composer install \
     --no-dev \
     --no-interaction \
@@ -48,10 +40,7 @@ RUN composer install \
 # Set permissions
 RUN chown -R www-data:www-data storage bootstrap/cache database
 
-<<<<<<< HEAD
-=======
 # Configure entrypoint
->>>>>>> e171a06 (Add Docker configuration for Render)
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
