@@ -6,6 +6,9 @@ PORT="${PORT:-10000}"
 # Jalankan migration database
 php artisan migrate --force
 
+# Masukkan data awal wahana
+php artisan db:seed --class=WahanaSeeder --force
+
 # Atur port Apache
 sed -i "s/Listen 80/Listen ${PORT}/" /etc/apache2/ports.conf
 
