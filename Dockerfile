@@ -1,4 +1,3 @@
-
 FROM php:8.3-apache
 
 # Install system dependencies and PHP extensions
